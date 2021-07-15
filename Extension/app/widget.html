@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta charset="UTF-8">
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="./css/style.css">
+
+  <script type="text/javascript" src="./lib/ZSDK.js"></script>
+  <script type="text/javascript" src="./lib/ZohoCrmHelper.js"></script>
+
+  <script src="./lib/ZohoEmbededAppSDK.js"></script>
+  <script src="jquery-min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css"
+    rel="stylesheet">
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.es.min.js"></script>
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  <script src="./js/Pageload.js"></script>
+  <script src="./js/PushEntity.js"></script>
+  <script src="./js/apiUtil.js"></script>
+  <script src="./js/Dynamicdata.js"></script>
+  <!-- <script src="./js/Refreshlist.js"></script> -->
+</head>
+
+<body>
+
+  <div class="typeofsync" id="typesync" style="top: 32%;left: 8%;position:fixed;font-size: 18px;">
+    <div style="display: inline-block;width: 331px;">
+      <label style="max-width: 89%;word-break: break-all;">Which type of sync would you like to initiate?<span
+          class=" txtreq" style="color: #cb3525;font-size: 20px;">* </span></label>
+    </div>
+    <div style="display: inline-block;padding: 8px 14px;width: 47%;">
+      <div class="zcSelect zcSelect--inline" id="synctype" style="width: 279px;" onclick="synctype()">
+        <span id="synctoinitiate"></span>
+        <span><i class="fa fa-caret-down" id="syncarrowicon" aria-hidden="true"></i></span>
+      </div>
+      <div id="emptysync" class="frmerrdiv" style="display:none;position:initial;">please select the type of sync</div>
+    </div>
+  </div>
+  <div class="typeofmodule" id="moduletype" style="top: 50%;left: 8%;position:fixed;font-size: 18px;">
+    <div style="display: inline-block;width: 331px;">
+      <label style="max-width: 89%;word-break: break-all;">Which module would you like to sync?<span class=" txtreq"
+          style="color: #cb3525;font-size: 20px;">* </span></label>
+    </div>
+    <div style="display: inline-block;padding: 8px 14px;width: 47%;">
+      <div class="zcSelect zcSelect--inline" id="typemodule" style="width: 279px;" onclick="diffmodule()">
+        <span id="syncmodule"></span>
+        <span><i class="fa fa-caret-down" id="syncmodulearrowicon" aria-hidden="true"></i></span>
+      </div>
+      <div id="emptymodule" class="frmerrdiv" style="display:none;position:initial;">please select the module</div>
+    </div>
+  </div>
+  <div class="crmfrm" id="syncdiv"
+    style="display: none;top: 1%;bottom: 62px;right: 0; left: 10px;position: fixed;overflow-x: hidden; overflow-y: scroll;">
+    <ul>
+      <li>
+        <label>Sync name<span class=" txtreq" style="color: #cb3525;font-size: 20px;">* </span></label>
+      </li>
+      <li>
+        <input type="text" maxlength="50" class="w100" id="syncDesc">
+        <div id="syncDescErr" class="errdiv"
+          style="display: none; margin-top:0px;position: absolute;transition: 0.3s all;">Please Enter the Sync Name</div>
+      </li>
+    </ul>
+    <ul>
+      <li><label>Select view<span class=" txtreq" style="color: #cb3525;font-size: 20px;">* </span></label></li>
+      <li>
+        <div class="f14 txtcnt">
+          <span style="padding: 10px;"><input type="radio" id="allContacts" name="allContacts" value="All Leads">
+            <label for="All Leads" style="display: contents;">All Leads</label></span>
+          <span style="padding: 10px;"><input type="radio" id="contactsCfView" name="allContacts" value="Custom View">
+            <label for="Custom View" style="display: contents;">Custom View</label></span>
+          <div class="frmerrdiv" id="selectview" style="display:none;position:initial;">Please select any view</div>
+          <!-- <span style="padding: 10px;"><input type="radio" id="contactsfltrView" name="allContacts" value="Criteria">
+            <label for="Criteria" style="display: contents;">Criteria</label></span> -->
+        </div>
+      </li>
+    </ul>
+    <ul id="customviewsection" style="display: none;">
+      <li><label>Custom view<span class=" txtreq" style="color: #cb3525;font-size: 20px;">* </span></label></li>
+      <li>
+        <div class="customview">
+          <div class="zcSelect zcSelect--inline" id="selectcustomleads" onclick="Getcustomview()">
+            <span id="specificlead" class="userselectedlead">Select View</span>
+            <span><i class="fa fa-caret-down" id="selectleadview" aria-hidden="true"></i></span>
+          </div>
+          <div class="frmerrdiv" id="selectcustomview" style="display:none;position:initial;">Please Select type of
+            customview</div>
+        </div>
+      </li>
+    </ul>
+    <ul>
+      <li><label class="">Sync to <span class=" txtreq" style="color: #cb3525;font-size: 20px;">* </span></label></li>
+      <li>
+        <div id="existingSyncList">
+          <div class="zcSelect zcSelect--inline" id="selectlist" onclick="Getlistname()">
+            <span id="specificlist" class="userselectedlist">Select a mailing list</span>
+            <span><i class="fa fa-caret-down" id="selectmaillist" aria-hidden="true"></i></span>
+          </div>
+          <div class="frmerrdiv" id="selectlistname" style="display:none;position:initial;">Please Select existinglist
+            or create newlist</div>
+        </div>
+      </li>
+    </ul>
+    <ul style="display: block;">
+      <div id="crmFieldDiv">
+        <div class="txtcnt" style="margin: 5px 20px;">
+          <div class="mt10">
+            <div class=" tbl w80 c">
+              <div class="vm f14 " style="font-weight:600;">Map your fields</div>
+            </div>
+          </div>
+        </div>
+        <div class="bdr w80 c" id="selMapDiv" style="margin-bottom: 50px;margin: 5px 60px;">
+          <div class="tbl W100 f14  ">
+            <div>
+              <div class="w30 p15 lgtgry bdrbtm bdrltr5" style="font-weight:600;">
+                CRM Fields</div>
+              <div class="w30 p15 lgtgry bdrbtm">
+                <!-- <img class="zcicons zcmaparw" src="../img/arrow.png"> -->
+                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+              </div>
+              <div class="lgtgry bdrbtm w30 " style="font-weight:600;">Constant Contact Fields</div>
+              <div class="p15 lgtgry bdrbtm w200x bdrrtr5"></div>
+            </div>
+          </div>
+          <div class="tbl W100 f14  ">
+            <div id="crmMapDiv">
+              <div class="w30 p15 bdrbtm" id="Email">Email<span class=" txtreq">* </span></div>
+              <div class="w30 p15 bdrbtm">
+                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+              </div>
+              <div class="bdrbtm w30" id="email">Contact Email</div>
+              <div class="bdrbtm w200x vm">
+              </div>
+            </div>
+          </div>
+          <div class="tbl W100 f14  ">
+            <div id="crmMapDiv">
+              <div class="w30 p15 bdrbtm" id="Last_Name">Last Name<span class=" txtreq">* </span></div>
+              <div class="w30 p15 bdrbtm">
+                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+              </div>
+              <div class="bdrbtm w30" id="last_name">Last Name</div>
+              <div class="bdrbtm w200x vm">
+              </div>
+            </div>
+          </div>
+          <div class="p15 lgtgry bdrlbrbr5 f14" id="addNewMap" style="display: block;">
+            <a class="linktxt" id="addMapping" onclick="fieldmapping()">Map more fields</a>
+            <a class="fr linktxt mr180" style="display: block;" id="setFavSync">Fetch custom-mapped fields</a>
+          </div>
+          <div class="p15 lgtgry bdrlbrbr5" id="newMappingDiv" style="display: none;">
+            <div class="fr">
+              <i class="fa fa-times" aria-hidden="true" id="closenewmappingdiv" onclick="closenewmappingdiv()"></i>
+            </div>
+            <div class="f14 " style="font-weight: 600;">Map New Field</div>
+            <div class="tbl W100">
+              <div>
+                <div class="w60 vb" style="width: 50%;">
+                  <div class="mt30 rel">
+                    <div class="zcSelect zcSelect--inline" id="crmNewFieldFltr" onclick="fltrdrpdwn(event)"
+                      style="background-color: #fff;width: 40%;float: left;">
+                      <span id="specificfield" class="userselectedfield">Select CRM Field</span>
+                      <span><i class="fa fa-caret-down" id="selectfield" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="zcSelect zcSelect--inline" id="constantNewFielddrpdwn" onclick="constantdrpdwn()"
+                      style="background-color: #fff;width: 43%;">
+                      <span id="constantfield" class="selectedconstantfield">Select Constant Contact Field</span>
+                      <span><i class="fa fa-caret-down" id="constantcontact" aria-hidden="true"></i></span>
+                    </div>
+                    <button class=" pri btn ml20" id="addNewMapping" onclick="addCrmMapping()"
+                      style="float: right;">Add</button>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </ul>
+  </div>
+
+  <div class="cmpwzrdbandbtmcntr pl85 zcrmp-btmband" id="crmCreationBottomBand" style="display: none;">
+    <div style="position: absolute;top: 10px;left:0px;z-index: 12;width: 100%;" class="pl85 zcrmp-btmband">
+      <button class="btnlft" id="syncSelectView" service="Zoho CRM" onclick="backsyncSelectView()">Cancel</button>
+      <button class="btnrgt" id="syncStep2" onclick="pushcontact()" style="width: 82px;">Next</button>
+    </div>
+    <div class="cmpwzrdbandbtm"></div>
+  </div>
+  </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" style="position: absolute;" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" style="font-size: 20px;font-weight: bold;margin-top: auto;margin-bottom: auto;">
+          </h4>
+        </div>
+        <div class="modal-body" id="modalbody" style="font-size: 13px;">
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+      <!-- /.modal-content -->
+      <div class="zcMsg zcErrMsg" id="modal-error" style="display: none;z-index: 13;">
+        <span id="modal-errormsg"></span>
+      </div>
+    </div>
+  </div>
+  <!-- /.modal-div-->
+  <div class="zcMsg zcErrMsg" id="error" style="display: none;z-index: 13;">
+    <span id="errormsg"></span>
+  </div>
+  <div class="zcMsg zcSucMsg" id="success" style="display: none;z-index: 13;">
+    <span id="sucMsg"></span>
+  </div>
+  <!-- <script>
+    var nameps="zc_constantcontact123";
+    ZOHO.CRM.CONNECTOR.authorize(nameps).catch(function(err){console.log("err",err)}).then(function(t){console.log("after then"+t)});
+  </script> -->
+</body>
+
+</html>
