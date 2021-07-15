@@ -76,7 +76,6 @@ async function pushcontact() {
 }else{
     document.getElementById("syncDescErr").style.display = "block";
 }
-
 }
 async function pushtoconstantcontact(importcontact, listid) {
     console.log("importcontact", importcontact);
