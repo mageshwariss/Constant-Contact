@@ -109,6 +109,6 @@ async function pushtoconstantcontact(importcontact, listid) {
             window.apiUtil.apiErrormsg(error);
         });
     } else {
-        window.apiUtil.apiSuccessmsg("There is no new Lead in CRM");
+        window.apiUtil.apiSuccessmsg("There are no records for this custom view");
     }
 }
