@@ -1,0 +1,21 @@
+On successful receiving of the alteration product, status should be 'Product for Alteration received'
+
+
+
+
+https://localhost:8888
+
+https://oauth.pstmn.io/v1/callback
+
+https%3A%2F%2Fplatform%2Ezoho%2Ecom%2Fauth%2Fconns%2Fconstantcontact%2Fredirect%2F
+
+https%3A%2F%2Flocalhost%3A8888
+
+:  %3A
+/  %2F
+.  %2E
+
+
+https://platform.zoho.com/auth/conns/constantcontact/redirect#access_token=SigEdXJCTZyXkbs2Cs0CockT6j2T&state=PORTAL-user72-US-9f7063f53df7d38543400417236782a846390fab72b820d7f66145f5a3b78d42a88ff3619c32a5b7afafbaa69b8f843a-null&token_type=Bearer
+
+Bearer SigEdXJCTZyXkbs2Cs0CockT6j2T

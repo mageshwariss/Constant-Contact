@@ -329,6 +329,7 @@ var apiCore = {
 
             });
         }
+        console.log("designimportdata",designimportdata);
         return designimportdata;
     }
 };

@@ -20,29 +20,56 @@ ZOHO.embeddedApp.on("PageLoad", async function (data) {
 
   // Get the record details of the entity using the value returned by PageLoad listener
   if (entity == "constentcontact__list") {
-    document.getElementById("typesync").style.display = "block";
-    document.getElementById("moduletype").style.display = "block";
-    document.getElementById("campaignsummary").style.display = "none";
-    /* ZOHO.CRM.META.getRelatedList({"Entity":"constentcontact__list"}).then(function(getRelatedList){
-      console.log("getRelatedList",getRelatedList);	
-      });Query:"((Company:equals:Zoho)or(Company:equals:zylker))"
-      await ZOHO.CRM.API.searchRecord({ Entity: "ConstantList_Vs_Leads", Type: "criteria", Query: "(Associate_List:equals:4493114000000124367)" })
-      .then(async function (response) {
-
-      })
-      await ZOHO.CRM.API.getAllRecords({
-                Entity: "ConstantList_Vs_Leads"
-            }).then(function (custommoduledata) {
-              console.log("custommoduledata", custommoduledata);
-            })*/
-
-  }else if(entity=="Campaigns"){
-    document.getElementById("typesync").style.display = "none";
-    document.getElementById("moduletype").style.display = "none";
-    document.getElementById("campaignsummary").style.display = "block";
-    CampaignSummary(data);
+    //Refreshlist();
   } else {
-    window.apiUtil.GetInitiallistcontact_thirdparty(entity);
+
+    await ZOHO.CRM.API.getAllRecords({
+      Entity: entity
+    }).then(async function (data) {
+      console.log("Leads", data);
+      if (data.statusText != "nocontent") {
+        moduledata = data.data;
+      }
+      await ZOHO.CRM.API.getAllRecords({
+        Entity: "constentcontact__list"
+      }).then(function (custommoduledata) {
+        console.log("custommoduledata", custommoduledata);
+        if (custommoduledata.statusText != "nocontent") {
+          custommodulelist = custommoduledata.data;
+        }
+      })
+    })
+    var dataobj = {};
+    await ZOHO.CRM.CONNECTOR.invokeAPI("constentcontact.constantcontact.getalllist", dataobj).then(async function (getlist) {
+      console.log("getlist", getlist);
+      var convertjson = JSON.parse(getlist.response);
+      Totallist = convertjson.lists;
+      console.log("getalllist", Totallist);
+      var dataobj1 = {};
+      await ZOHO.CRM.CONNECTOR.invokeAPI("constentcontact.constantcontact.constant", dataobj1).then(function (data) {
+        var convertjson = JSON.parse(data.response);
+        contactlist = convertjson.contacts;
+        console.log("getallcontactlist", contactlist);
+        for (var i = 0; i < Totallist.length; i++) {
+          for (var j = 0; j < contactlist.length; j++) {
+            // contactlist[j]["custom_fields"]["contactid"] = contactlist[j].contact_id;
+            contactlist[j]["list_members"] = [];
+            for (var k = 0; k < contactlist[j].list_memberships.length; k++) {
+              var index = Totallist.findIndex(list => list.list_id === contactlist[j].list_memberships[k]);
+              let my_object = {};
+              my_object.listname = Totallist[index].name;
+              my_object.listid = Totallist[index].list_id;
+              contactlist[j]["list_members"].push(my_object);
+            }
+          }
+        }
+        PushInitiallistto_custommodule();
+      }).catch(function (error) {
+        console.log("error", error);
+      })
+    }).catch(function (error) {
+      console.log("error", error);
+    });
   }
 })
 ZOHO.embeddedApp.init();
@@ -130,7 +157,8 @@ async function PushInitiallistto_custommodule() {
               "Company": contactlist[i].company_name,
               "Email": contactlist[i].email_address.address,
               "First_Name": contactlist[i].first_name,
-              "Last_Name": contactlist[i].last_name
+              "Last_Name": contactlist[i].last_name,
+              "constentcontact__Flag": "1"
             }
             console.log("recordData", recordData);
             await ZOHO.CRM.API.insertRecord({ Entity: "Leads", APIData: recordData, Trigger: ["workflow"] }).then(async function (response) {

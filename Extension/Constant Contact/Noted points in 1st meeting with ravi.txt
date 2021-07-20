@@ -1,0 +1,24 @@
+1.Is there any possibility to add aditional columns or custom fields in contact list of constant contact? 
+
+2.when using connector first time we have to configure out which fields of crm are mapped to which fields in constant contact
+
+3.start begin with fName,LastName,Email,Company
+
+4.create custom view where there are two emailids the minute pushed to constant contact maintain to keep these emails in crm
+when there is new email is created in crm at later time(sheduler) we have to push that new email to CC
+
+5.To create a contact using constant contact api 
+once u have creation of contact then what will we do this create contact list using that list add multiple contact 
+to this list
+
+In extension create a screen where you will to choose the list of contacts you will give the name for the list 
+that you want to create so then using that list name and using that information of contacts you will do both of this
+ 
+In your extension screen to choose which module of CRM for now have a two option like leads or contacts and depending upon 
+what i have choose then whether i'm taking all leads or subset of leads whatever custom view and then define the name of 
+list that i want to create on constant contact side and then i click ok you should take all the contact from that 
+custom view and create a new list in constant contact with the name that i have provided and to that list you should add
+ all these new contacts 
+
+if that is done the sync process is kind of setup then we have to figure out for that same list when campaign created
+how do we retreive data for a campaign into campaign module crm.
