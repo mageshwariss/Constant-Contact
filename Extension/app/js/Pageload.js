@@ -1,4 +1,5 @@
 var entity;
+//var pageloaddata;
 var moduledata = [];
 var contactlist = [];
 Totallist = [];
@@ -12,7 +13,7 @@ var entityName;
 ZOHO.embeddedApp.init(); */
 // PageLoad listener that returns the entity details of the active page
 ZOHO.embeddedApp.on("PageLoad", async function (data) {
-
+ // pageloaddata=data;
   // ZOHO.embeddedApp.init().then(async function (data) {
   console.log("loaddata", data);
   //id = data.EntityId[0];
@@ -37,10 +38,10 @@ ZOHO.embeddedApp.on("PageLoad", async function (data) {
             })*/
 
   }else if(entity=="Campaigns"){
-    document.getElementById("typesync").style.display = "none";
-    document.getElementById("moduletype").style.display = "none";
-    document.getElementById("campaignsummary").style.display = "block";
-    CampaignSummary(data);
+    //document.getElementById("typesync").style.display = "none";
+   //document.getElementById("moduletype").style.display = "none";
+   // document.getElementById("campaignsummary").style.display = "block";
+   // CampaignSummary(data);
   } else {
     window.apiUtil.GetInitiallistcontact_thirdparty(entity);
   }

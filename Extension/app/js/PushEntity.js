@@ -33,6 +33,8 @@ async function pushcontact() {
                                         Entity: "constentcontact__list",
                                         APIData: {
                                             "id": matcheddata.data[0].id,
+                                            "Sync_Name":syncname,
+                                            "Sync_Frequency": synctoinitiate,
                                             "Mapping_Parameter": selectedview
                                         },
                                         Trigger: ["workflow"]

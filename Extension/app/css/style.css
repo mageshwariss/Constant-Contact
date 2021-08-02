@@ -522,3 +522,85 @@ tr td:last-child {
     white-space: normal;
     word-break: break-all;
 }
+.topnav {
+    overflow: hidden;
+}
+
+.topnav a {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.topnav li.active {
+    border-bottom: 3px solid #1c9efc;
+}
+
+.topnav li.active a,
+.topnav li:hover a {
+    opacity: 1;
+}
+
+.topnav li a {
+    opacity: 0.6;
+}
+
+.topnav .tab {
+    background-color: #fdfdfd;
+    border-style: solid;
+    border-width: 1px 0;
+    border-color: #F4F4F4;
+    height: 46px;
+}
+#trackingreport{
+    padding: 10px 36px;
+}
+.row {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -12px;
+    margin-left: -12px;
+}
+.col {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+}
+.metric {
+    display: flex;
+    flex-wrap: nowrap;
+    border-bottom: 1px dotted #cfd8dc;
+}
+.metric .metric-term {
+    font-weight: 600;
+    flex: 1 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 12px;
+}
+.metric .metric-figure {
+    flex: 0 0 auto;
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
+.col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col-auto, .col-lg, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-auto, .col-md, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md-auto, .col-sm, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-auto, .preview_test_library .col, .preview_test_library .col-1, .preview_test_library .col-2, .preview_test_library .col-3, .preview_test_library .col-4, .preview_test_library .col-5, .preview_test_library .col-6, .preview_test_library .col-7, .preview_test_library .col-8, .preview_test_library .col-9, .preview_test_library .col-10, .preview_test_library .col-11, .preview_test_library .col-12, .preview_test_library .col-auto, .preview_test_library .col-lg, .preview_test_library .col-lg-1, .preview_test_library .col-lg-2, .preview_test_library .col-lg-3, .preview_test_library .col-lg-4, .preview_test_library .col-lg-5, .preview_test_library .col-lg-6, .preview_test_library .col-lg-7, .preview_test_library .col-lg-8, .preview_test_library .col-lg-9, .preview_test_library .col-lg-10, .preview_test_library .col-lg-11, .preview_test_library .col-lg-12, .preview_test_library .col-lg-auto, .preview_test_library .col-md, .preview_test_library .col-md-1, .preview_test_library .col-md-2, .preview_test_library .col-md-3, .preview_test_library .col-md-4, .preview_test_library .col-md-5, .preview_test_library .col-md-6, .preview_test_library .col-md-7, .preview_test_library .col-md-8, .preview_test_library .col-md-9, .preview_test_library .col-md-10, .preview_test_library .col-md-11, .preview_test_library .col-md-12, .preview_test_library .col-md-auto, .preview_test_library .col-sm, .preview_test_library .col-sm-1, .preview_test_library .col-sm-2, .preview_test_library .col-sm-3, .preview_test_library .col-sm-4, .preview_test_library .col-sm-5, .preview_test_library .col-sm-6, .preview_test_library .col-sm-7, .preview_test_library .col-sm-8, .preview_test_library .col-sm-9, .preview_test_library .col-sm-10, .preview_test_library .col-sm-11, .preview_test_library .col-sm-12, .preview_test_library .col-sm-auto, .preview_test_library .col-xl, .preview_test_library .col-xl-1, .preview_test_library .col-xl-2, .preview_test_library .col-xl-3, .preview_test_library .col-xl-4, .preview_test_library .col-xl-5, .preview_test_library .col-xl-6, .preview_test_library .col-xl-7, .preview_test_library .col-xl-8, .preview_test_library .col-xl-9, .preview_test_library .col-xl-10, .preview_test_library .col-xl-11, .preview_test_library .col-xl-12, .preview_test_library .col-xl-auto {
+    position: relative;
+    width: 100%;
+    padding-right: 12px;
+    padding-left: 12px;
+}
+.metric+.metric {
+    margin-top: 25px;
+}
+/* @media (min-width: 400px) .metric>:first-child {
+    padding-left: 0;
+}
+@media (min-width: 400px) .metric>* {
+    padding: 6px;
+} */
