@@ -1,6 +1,7 @@
 var selectview;
 newlycreatedlead = [];
 specificcustomviewdata = [];
+//var thirdparty_createlistdata;
 metafields = [];
 addnewlist = false;
 customview = [];
@@ -52,10 +53,10 @@ $(document).ready(function () {
             document.getElementById("constantfield").innerText = event.target.innerText;
             document.getElementsByClassName("selectedconstantfield")[0].setAttribute("value", event.target.id);
         }
-        if (event.target.className == "modulesynctype" || event.target.className == "LiVe") {
+        /* if (event.target.className == "modulesynctype" || event.target.className == "LiVe") {
             document.getElementById("synctoinitiate").innerText = event.target.innerText;
             showhide_basedonsynctype();
-        }
+        } */
         if (!$(event.target).closest("#selectlist").length && !$(event.target).closest("#myInput").length
             && !$(event.target).closest("#synctype").length && !$(event.target).closest("#typemodule").length && !$(event.target).closest("#selectcustomleads").length
             && !$(event.target).closest("#crmNewFieldFltr").length && !$(event.target).closest("#constantNewFielddrpdwn").length) {
@@ -66,13 +67,16 @@ $(document).ready(function () {
             document.getElementById("syncmodule").innerText = event.target.innerText;
             entity = document.getElementById("syncmodule").innerText;
             document.getElementById("emptymodule").style.display = "none";
-            await window.apiUtil.GetInitiallistcontact_thirdparty(event.target.innerText).then(function () {
+            /* await window.apiUtil.GetInitiallistcontact_thirdparty(event.target.innerText).then(function () {
+                showhide_basedonsynctype();
+            }) */
+            await window.apiUtil.GetInitiallistcontact_custommodule(event.target.innerText).then(function () {
                 showhide_basedonsynctype();
             })
         }
     });
 });
-function synctype() {
+/* function synctype() {
     console.log("clicked");
     if (!document.getElementById("syncoption")) {
         $('div').remove('.zdPopover');
@@ -102,7 +106,7 @@ function synctype() {
     }
     document.getElementById("syncoption").style.top = settop + "px";
     console.log("finalsettop", settop);
-}
+} */
 function diffmodule() {
     if (!document.getElementById("moduleoption")) {
         $('div').remove('.zdPopover');
@@ -179,11 +183,17 @@ function Getlistname() {
 
             '<div style="line-height:0;"><i class="glyphicon glyphicon-search" id="dropdownsearchicon"></i>' +
             '<input type="text" id="myInput" onkeyup="dropdownsearchfilter(syncto_list)" autocomplete="off" placeholder="Search.."></div>';
-        if (Totallist.length > 0) {
-            for (var i = 0; i < Totallist.length; i++) {
-                _template += '<li id="' + Totallist[i].list_id + '" class="listname"><span class="LiV" id="' + Totallist[i].list_id + '" title="' + Totallist[i].name + '">' + Totallist[i].name + '</span></li>';
+        if (custommodulelist.length > 0) {
+            for (var i = 0; i < custommodulelist.length; i++) {
+                console.log(custommodulelist[i].Name);
+                _template += '<li id="' + custommodulelist[i].constentcontact__listid + '" class="listname"><span class="LiV" id="' + custommodulelist[i].constentcontact__listid + '" title="' + custommodulelist[i].Name + '">' + custommodulelist[i].Name + '</span></li>';
             }
         }
+        /*  if (Totallist.length > 0) {
+        for (var i = 0; i < Totallist.length; i++) {
+            _template += '<li id="' + Totallist[i].list_id + '" class="listname"><span class="LiV" id="' + Totallist[i].list_id + '" title="' + Totallist[i].name + '">' + Totallist[i].name + '</span></li>';
+        }
+    } */
         _template += '<li  class="test" id="addlist"  style="text-align:center;cursor: pointer;"><span class="createlist" title="Create mailing list" data-toggle="modal" data-target="#myModal" style="font-size: 14px;color: #349bee !important;" >Create mailing list</span></li></ul>';
         rootElement.innerHTML = _template;
 
@@ -257,6 +267,7 @@ function Getlistname() {
                     await ZOHO.CRM.CONNECTOR.invokeAPI("constentcontact.constantcontact.create_list", dataobj)
                         .then(async function (data) {
                             var createlistdata = JSON.parse(data.response);
+                            // thirdparty_createlistdata=createlistdata;
                             console.log("list", createlistdata);
                             document.getElementsByClassName("userselectedlist")[0].setAttribute("value", createlistdata.list_id);
                         })
@@ -318,24 +329,22 @@ function getspecificcustomviewdata(optionid) {
     }
 }
 function showhide_basedonsynctype() {
-    var typeofsync = document.getElementById("synctoinitiate").innerText;
+    //var typeofsync = document.getElementById("synctoinitiate").innerText;
     var typeofmodule = document.getElementById("syncmodule").innerText;
-    if (typeofsync != "" && typeofmodule != "") {
-        document.getElementById("emptysync").style.display = "none";
-
-        document.getElementById("typesync").style.display = "none";
+    // if (typeofsync != "" && typeofmodule != "") {
+    if (typeofmodule != "") {
+        //document.getElementById("emptysync").style.display = "none";
         document.getElementById("moduletype").style.display = "none";
         document.getElementById("syncdiv").style.display = "block";
         document.getElementById("crmCreationBottomBand").style.display = "block";
-    } else if (typeofsync == "") {
+    } /* else if (typeofsync == "") {
         document.getElementById("emptysync").style.display = "block";
         document.getElementById("emptymodule").style.display = "none";
-        document.getElementById("typesync").style.display = "block";
         document.getElementById("moduletype").style.display = "block";
         document.getElementById("syncdiv").style.display = "none";
         document.getElementById("crmCreationBottomBand").style.display = "none";
-    } else if (typeofmodule == "") {
-        document.getElementById("emptysync").style.display = "none";
+    } */ else if (typeofmodule == "") {
+        // document.getElementById("emptysync").style.display = "none";
         setTimeout(async function () {
             if (document.getElementById("syncmodule").innerText == "") {
                 document.getElementById("emptymodule").style.display = "block";
@@ -343,11 +352,11 @@ function showhide_basedonsynctype() {
                 document.getElementById("emptymodule").style.display = "none";
             }
         }, 3000);
-        document.getElementById("typesync").style.display = "block";
+        //document.getElementById("typesync").style.display = "block";
         document.getElementById("moduletype").style.display = "block";
         document.getElementById("syncdiv").style.display = "none";
         document.getElementById("crmCreationBottomBand").style.display = "none";
-    } else if (typeofsync == "" && typeofmodule == "") {
+    } /* else if (typeofsync == "" && typeofmodule == "") {
         document.getElementById("emptysync").style.display = "block";
         setTimeout(async function () {
             if (document.getElementById("syncmodule").innerText == "") {
@@ -356,15 +365,15 @@ function showhide_basedonsynctype() {
                 document.getElementById("emptymodule").style.display = "none";
             }
         }, 3000);
-        document.getElementById("typesync").style.display = "block";
+        //document.getElementById("typesync").style.display = "block";
         document.getElementById("moduletype").style.display = "block";
         document.getElementById("syncdiv").style.display = "none";
         document.getElementById("crmCreationBottomBand").style.display = "none";
-    }
+    } */
 }
 
 function backsyncSelectView() {
-    document.getElementById("typesync").style.display = "block";
+    //document.getElementById("typesync").style.display = "block";
     document.getElementById("moduletype").style.display = "block";
     document.getElementById("syncdiv").style.display = "none";
     document.getElementById("crmCreationBottomBand").style.display = "none";
@@ -411,7 +420,9 @@ function fltrdrpdwn(event) {
             '<input type="text" id="myInput" onkeyup="dropdownsearchfilter(fields)" autocomplete="off" placeholder="Search.." style="width:95%"></div>';
         if (metafields.length > 0) {
             for (var i = 1; i < metafields.length; i++) {
-                _template += '<li id="' + metafields[i].api_name + '" class="crmfields"><span class="crm" id="' + metafields[i].api_name + '" title="' + metafields[i].field_label + '">' + metafields[i].field_label + '</span></li>';
+                if (metafields[i].field_label != "Last Name" && metafields[i].field_label != "Email") {
+                    _template += '<li id="' + metafields[i].api_name + '" class="crmfields"><span class="crm" id="' + metafields[i].api_name + '" title="' + metafields[i].field_label + '">' + metafields[i].field_label + '</span></li>';
+                }
             }
         }
 

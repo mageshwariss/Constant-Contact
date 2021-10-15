@@ -13,7 +13,7 @@ var entityName;
 ZOHO.embeddedApp.init(); */
 // PageLoad listener that returns the entity details of the active page
 ZOHO.embeddedApp.on("PageLoad", async function (data) {
- // pageloaddata=data;
+  // pageloaddata=data;
   // ZOHO.embeddedApp.init().then(async function (data) {
   console.log("loaddata", data);
   //id = data.EntityId[0];
@@ -21,29 +21,13 @@ ZOHO.embeddedApp.on("PageLoad", async function (data) {
 
   // Get the record details of the entity using the value returned by PageLoad listener
   if (entity == "constentcontact__list") {
-    document.getElementById("typesync").style.display = "block";
+   // document.getElementById("typesync").style.display = "block";
     document.getElementById("moduletype").style.display = "block";
-    document.getElementById("campaignsummary").style.display = "none";
-    /* ZOHO.CRM.META.getRelatedList({"Entity":"constentcontact__list"}).then(function(getRelatedList){
-      console.log("getRelatedList",getRelatedList);	
-      });Query:"((Company:equals:Zoho)or(Company:equals:zylker))"
-      await ZOHO.CRM.API.searchRecord({ Entity: "ConstantList_Vs_Leads", Type: "criteria", Query: "(Associate_List:equals:4493114000000124367)" })
-      .then(async function (response) {
-
-      })
-      await ZOHO.CRM.API.getAllRecords({
-                Entity: "ConstantList_Vs_Leads"
-            }).then(function (custommoduledata) {
-              console.log("custommoduledata", custommoduledata);
-            })*/
-
-  }else if(entity=="Campaigns"){
-    //document.getElementById("typesync").style.display = "none";
-   //document.getElementById("moduletype").style.display = "none";
-   // document.getElementById("campaignsummary").style.display = "block";
-   // CampaignSummary(data);
-  } else {
-    window.apiUtil.GetInitiallistcontact_thirdparty(entity);
+  } else if (entity == "Leads") {
+    document.getElementById("syncdiv").style.display = "block";
+    document.getElementById("crmCreationBottomBand").style.display = "block";
+    //window.apiUtil.GetInitiallistcontact_thirdparty(entity);
+    window.apiUtil.GetInitiallistcontact_custommodule(entity);
   }
 })
 ZOHO.embeddedApp.init();
@@ -57,7 +41,7 @@ async function PushInitiallistto_custommodule() {
     const listpresentedcontact = contactlist.filter(contact => contact.list_memberships.includes(Totallist[i].list_id));
     console.log("listpresentedcontact", listpresentedcontact, custommodulelist.length);
     if (custommodulelist.length > 0) {
-      var newlistindex
+      var newlistindex;
       if (listpresentedcontact.length > 0) {
         if (listpresentedcontact[0].custom_fields.length > 0) {
           console.log("thirdpartymappingparameter", listpresentedcontact[0].custom_fields[1].value);
@@ -73,7 +57,7 @@ async function PushInitiallistto_custommodule() {
         my_object.Name = Totallist[i].name;
         if (listpresentedcontact.length > 0) {
           if (listpresentedcontact[0].custom_fields.length > 0) {
-            my_object.Sync_Frequency = listpresentedcontact[0].custom_fields[0].value;
+           // my_object.Sync_Frequency = listpresentedcontact[0].custom_fields[0].value;
             my_object.Mapping_Parameter = listpresentedcontact[0].custom_fields[1].value;
           }
         }
@@ -85,7 +69,7 @@ async function PushInitiallistto_custommodule() {
       let my_object = {};
       my_object.Name = Totallist[i].name;
       if (listpresentedcontact.length > 0) {
-        my_object.Sync_Frequency = listpresentedcontact[0].custom_fields[0].value;
+       // my_object.Sync_Frequency = listpresentedcontact[0].custom_fields[0].value;
         my_object.Mapping_Parameter = listpresentedcontact[0].custom_fields[1].value;
       }
       data.push(my_object);

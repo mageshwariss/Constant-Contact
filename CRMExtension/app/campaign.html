@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/font.css">
+
+    <script type="text/javascript" src="./lib/ZSDK.js"></script>
+    <script type="text/javascript" src="./lib/ZohoCrmHelper.js"></script>
+
+    <script src="./lib/ZohoEmbededAppSDK.js"></script>
+    <script src="jquery-min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css"
+        rel="stylesheet">
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.es.min.js"></script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <script src="./js/Campaignsummary.js"></script>
+</head>
+
+<body>
+    <div id="campaignsummary" style="display: none;">
+        <div id="tab-cont" class="topnav" style="display: none;">
+            <div class="tab" id="views">
+                <span>
+                    <ul class="list-inline" style="margin-top: 2px;margin-left: 14px;">
+                        <li id="campaigndetails"><a data-toggle="tab" href="#details">Details</a></li>
+                        <li id="campaignreport"><a data-toggle="tab" href="#report" data_id="reportid">Report</a></li>
+
+                    </ul>
+                </span>
+            </div>
+            <div class="tab-content" style="margin-top: 1%">
+                <div id="details">
+                    <div id="viewdetails"></div>
+                </div>
+                <div id="report">
+                    <div id="trackingreport"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        ZOHO.embeddedApp.on("PageLoad", async function (data) {
+            pageloaddata = data;
+            GetCampaignSummary(pageloaddata);
+        })
+        ZOHO.embeddedApp.init();
+    </script>
+</body>
+
+</html>

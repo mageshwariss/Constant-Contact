@@ -37,9 +37,9 @@
         <div id="tab-cont" class="topnav" style="display: none;">
             <div class="tab" id="views">
                 <span>
-                    <ul class="list-inline" style="margin-top: -6px;">
+                    <ul class="list-inline" style="margin-top: 2px;margin-left: 14px;">
                         <li id="campaigndetails"><a data-toggle="tab" href="#details">Details</a></li>
-                        <li id="campaignreport"><a data-toggle="tab" href="#report" data_id="dealid">Report</a></li>
+                        <li id="campaignreport"><a data-toggle="tab" href="#report" data_id="reportid">Report</a></li>
 
                     </ul>
                 </span>
@@ -64,9 +64,7 @@
             .then(function(relateddata){
                 console.log("getRelatedRecords",relateddata)
             }) */
-            document.getElementById("campaignsummary").style.display = "block";
-            activetab();
-            document.getElementById("tab-cont").style.display = "block";
+           
             pageloaddata = data;
             GetCampaignSummary(pageloaddata);
         })

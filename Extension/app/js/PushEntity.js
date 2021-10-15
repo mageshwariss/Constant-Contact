@@ -1,5 +1,5 @@
 async function pushcontact() {
-    var synctoinitiate = document.getElementById("synctoinitiate").innerHTML;
+    //var synctoinitiate = document.getElementById("synctoinitiate").innerHTML;
     var typeofview = document.getElementById("specificlead").innerText;
     var listid = document.getElementById("specificlist").getAttribute("value");
     var listname = document.getElementById("specificlist").innerHTML;
@@ -20,7 +20,8 @@ async function pushcontact() {
                 document.getElementById("selectlistname").style.display = "none";
                 if (addnewlist == true) {
                     console.log("clicked newlist");
-                    await window.apiUtil.Insertnewlist(syncname, listname, synctoinitiate, selectedview, listid);
+                   // await window.apiUtil.Insertnewlist(syncname, listname, synctoinitiate, selectedview, listid);
+                   await window.apiUtil.Insertnewlist(syncname, listname, selectedview, listid);
                 } else {
                     await ZOHO.CRM.API.searchRecord({ Entity: "constentcontact__list", Type: "criteria", Query: "(Name:equals:" + listname + ")" })
                         .then(async function (matcheddata) {
@@ -34,7 +35,6 @@ async function pushcontact() {
                                         APIData: {
                                             "id": matcheddata.data[0].id,
                                             "Sync_Name":syncname,
-                                            "Sync_Frequency": synctoinitiate,
                                             "Mapping_Parameter": selectedview
                                         },
                                         Trigger: ["workflow"]
@@ -46,7 +46,7 @@ async function pushcontact() {
                                                 .then(async function (linkingrecord) {
                                                     console.log("linkingrecord", linkingrecord);
                                                     if (linkingrecord.statusText != "nocontent") {
-                                                        for (var i = 0; i < linkingrecord.data.length; i++) {
+                                                        /* for (var i = 0; i < linkingrecord.data.length; i++) {
                                                             await ZOHO.CRM.API.deleteRecord({ Entity: "ConstantList_Vs_Leads", RecordID: linkingrecord.data[i].id })
                                                                 .then(async function (deleterecord) {
                                                                     console.log("deleterecord", deleterecord);
@@ -60,7 +60,7 @@ async function pushcontact() {
                                                                         }
                                                                     })
                                                                 })
-                                                        }
+                                                        } */
                                                     } else {
                                                         await window.apiUtil.createlist(matcheddata.data[0].id, selectedview);
                                                     }
@@ -68,7 +68,8 @@ async function pushcontact() {
                                         })
                                 }
                             } else {
-                                await window.apiUtil.Insertnewlist(listname, synctoinitiate, selectedview, listid);
+                               // await window.apiUtil.Insertnewlist(listname, synctoinitiate, selectedview, listid);
+                               await window.apiUtil.Insertnewlist(listname, selectedview, listid);
                             }
                         })
                 }

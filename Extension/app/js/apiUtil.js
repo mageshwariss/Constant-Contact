@@ -1,5 +1,9 @@
 var apiCore = {
-    GetInitiallistcontact_thirdparty: async function (entity) {
+    GetInitiallistcontact_custommodule: async function (entity) {
+        /*
+        1.Get Allrecords from pageload module(leads or contacts or custommodule(constant contact lists))
+        2.Get Allrecords from custommodule 
+        */
         await ZOHO.CRM.API.getAllRecords({
             Entity: entity
         }).then(async function (data) {
@@ -7,14 +11,40 @@ var apiCore = {
             if (data.statusText != "nocontent") {
                 moduledata = data.data;
             }
-            await ZOHO.CRM.API.getAllRecords({
-                Entity: "constentcontact__list"
-            }).then(function (custommoduledata) {
-                console.log("custommoduledata", custommoduledata);
-                if (custommoduledata.statusText != "nocontent") {
-                    custommodulelist = custommoduledata.data;
-                }
-            })
+            if (entity != "constentcontact__list") {
+                await ZOHO.CRM.API.getAllRecords({
+                    Entity: "constentcontact__list"
+                }).then(function (custommoduledata) {
+                    console.log("custommoduledata", custommoduledata);
+                    if (custommoduledata.statusText != "nocontent") {
+                        custommodulelist = custommoduledata.data;
+                    }
+                })
+            }
+        })
+    },
+    GetInitiallistcontact_thirdparty: async function (entity) {
+        /*
+       1.Get Allrecords of pageload module(leads or contacts or custommodule(constant contact lists))
+       2.
+         */
+        await ZOHO.CRM.API.getAllRecords({
+            Entity: entity
+        }).then(async function (data) {
+            console.log("Leads", data);
+            if (data.statusText != "nocontent") {
+                moduledata = data.data;
+            }
+            if (entity != "constentcontact__list") {
+                await ZOHO.CRM.API.getAllRecords({
+                    Entity: "constentcontact__list"
+                }).then(function (custommoduledata) {
+                    console.log("custommoduledata", custommoduledata);
+                    if (custommoduledata.statusText != "nocontent") {
+                        custommodulelist = custommoduledata.data;
+                    }
+                })
+            }
         })
         var dataobj = {};
         await ZOHO.CRM.CONNECTOR.invokeAPI("constentcontact.constantcontact.getalllist", dataobj).then(async function (getlist) {
@@ -29,7 +59,7 @@ var apiCore = {
                 console.log("getallcontactlist", contactlist);
                 for (var i = 0; i < Totallist.length; i++) {
                     for (var j = 0; j < contactlist.length; j++) {
-                        // contactlist[j]["custom_fields"]["contactid"] = contactlist[j].contact_id;
+                        //contactlist[j]["custom_fields"]["contactid"] = contactlist[j].contact_id;
                         contactlist[j]["list_members"] = [];
                         for (var k = 0; k < contactlist[j].list_memberships.length; k++) {
                             var index = Totallist.findIndex(list => list.list_id === contactlist[j].list_memberships[k]);
@@ -45,7 +75,6 @@ var apiCore = {
                     console.log("designedcustomdata", designedcustomdata);
                     window.apiUtil.PushInitiallist_to_custommodule(designedcustomdata);
                 });
-
                 //Based on Customfields of thirdparty
                 // PushInitiallistto_custommodule();
             }).catch(function (error) {
@@ -169,10 +198,10 @@ var apiCore = {
         setTimeout(async function () {
             document.getElementById("success").style.display = "none";
             document.getElementById("sucMsg").innerHTML = '';
-            await ZOHO.CRM.UI.Popup.close()
-                .then(function (data) {
-                    console.log(data)
-                })
+             await ZOHO.CRM.UI.Popup.close()
+                 .then(function (data) {
+                     console.log(data)
+                 })
         }, 3000);
     },
     apiErrormsg: function (errmessage) {
@@ -182,9 +211,9 @@ var apiCore = {
             document.getElementById("error").style.display = "none";
             document.getElementById("errormsg").innerHTML = '';
             await ZOHO.CRM.UI.Popup.close()
-            .then(function (data) {
-                console.log(data)
-            })
+                .then(function (data) {
+                    console.log(data)
+                })
         }, 3000);
     },
     insertintolinkingmodule: async function (contactlistindex, specificviewdatas) {
@@ -237,15 +266,17 @@ var apiCore = {
         console.log("finalfilterdata", filterdata, moduledata);
         return filterdata;
     },
-    Insertnewlist: async function (syncname,listname, synctoinitiate, selectedview, listid) {
+    //Insertnewlist: async function (syncname, listname, synctoinitiate, selectedview, listid) {
+    Insertnewlist: async function (syncname, listname, selectedview, listid) {
         var data = [
             {
                 "Name": listname,
-                "Sync_Name":syncname,
-                "Sync_Frequency": synctoinitiate,
-                "Mapping_Parameter": selectedview
+                "Sync_Name": syncname,
+                "Mapping_Parameter": selectedview,
+                "constentcontact__listid": listid
             }
         ];
+        console.log("Insertnewlistdata", data);
         await ZOHO.CRM.API.insertRecord({ Entity: "constentcontact__list", APIData: data, Trigger: ["workflow"] }).then(async function (response) {
             console.log("inserted main record", response);
             var internallistid = response.data[0].details.id;
@@ -272,10 +303,9 @@ var apiCore = {
     designtheimportdata: async function (designdata, listid, selectedview) {
         console.log("listid", listid, designdata);
         //console.log("designdata", designdata);
-        var synctoinitiate = document.getElementById("synctoinitiate").innerHTML;
+        // var synctoinitiate = document.getElementById("synctoinitiate").innerHTML;
         console.log("totalfields", document.getElementById("selMapDiv").children);
         var childnode = document.getElementById("selMapDiv").children;
-
         designimportdata = [];
         customrelatedtdata = [];
         for (var i = 0; i < designdata.length; i++) {
@@ -284,7 +314,7 @@ var apiCore = {
             designimportdata[i]["email"] = designdata[i].Email;
             designimportdata[i]["last_name"] = designdata[i].Last_Name;
             designimportdata[i]["cf:mapping_parameter"] = selectedview;
-            designimportdata[i]["cf:sync_frequency"] = synctoinitiate;
+            //designimportdata[i]["cf:sync_frequency"] = synctoinitiate;
             for (j = 4; j < childnode.length; j++) {
                 console.log("childnode[j].className", childnode[j].className, childnode[j].firstElementChild.id);
                 if (childnode[j].className == "tbl W100 f14  " && childnode[j].firstElementChild.id.includes("crmMapDiv")) {
@@ -329,7 +359,7 @@ var apiCore = {
 
             });
         }
-        console.log("designimportdata",designimportdata);
+        console.log("designimportdata", designimportdata);
         return designimportdata;
     }
 };
